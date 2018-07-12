@@ -335,7 +335,7 @@ remove_preamble () {
 # stdin is the prose of the preamble; stdout is the same, but with "--- BEGIN"
 # and "--- END" sort of lines.
 bracket_preamble () {
-    local $preamble_name="$1"
+    local preamble_name="$1"
     echo "--- BEGIN $preamble_name ---"
     cat
     echo "--- END $preamble_name ---"
