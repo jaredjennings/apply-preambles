@@ -99,6 +99,11 @@ comment_syntax () {
         *.rb                                       )  echo hash_skip_hashbang ;;
         *.py                                       )  echo hash_skip_hashbang ;;
         *.sh                                       )  echo hash_skip_hashbang ;;
+        *.scad                                     )  echo c ;;
+        *.clj                                      )  echo lisp ;;
+        *.stl                                      )  echo none ;;
+        # run away! run away! https://stackoverflow.com/q/4823468
+        *.md                                       )  echo none ;;
         */Makefile                                 )  echo hash_skip_hashbang ;;
         */Vagrantfile                              )  echo hash_skip_hashbang ;;
         *.aug                                      )  echo augeas ;;
@@ -108,6 +113,7 @@ comment_syntax () {
         *.ins                                      )  echo ins ;;
         # Punt on XML for now
         *.xml                                      )  echo none ;;
+        *.svg                                      )  echo none ;;
         *.tex.tmpl                                 )  echo cheetah ;;
 
 
@@ -221,6 +227,27 @@ make_comment_ins () {
     sed -e 's/^/%% /g' | sed 's/ $//'
 }
 
+insert_at_top_c () {
+    make_comment_c
+    cat "$@"
+}
+
+make_comment_c () {
+    echo '/*'
+    sed 's,/\*,[slash star],; s,\*/,[star slash],;'
+    echo '*/'
+}
+
+insert_at_top_lisp () {
+    make_comment_lisp
+    cat "$@"
+}
+
+make_comment_lisp () {
+    sed -e 's/^/;; /g' | sed 's/ $//'
+}
+
+
 # The ins file is another curiosity. Firstly, what we call a preamble elsewhere
 # in this script, we will call 'the prose' here, because the .ins file already
 # has a thing called a 'preamble.' This preamble is commentified and added to
@@ -295,7 +322,7 @@ remove_preamble () {
     local filename="$2"
     local function_to_use
     case "$(comment_syntax $filename)" in
-        dtx|augeas)
+        dtx|augeas|c)
             function_to_use=_remove_preamble_plus_one ;;
         *)
             function_to_use=_remove_preamble_usual ;;
@@ -373,7 +400,7 @@ IFS='
 # If things go south, don't overwrite things with empty files, die first.
 set -e
 
-find "$@" -name .svn -prune -o -type f -print | while read filename; do
+find "$@" -name .svn -prune -o -name .git -prune -o -type f -print | while read filename; do
     synt=$(comment_syntax "$filename")
     
     case "$synt" in

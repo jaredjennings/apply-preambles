@@ -58,6 +58,10 @@ test_lorem_blank_lines () {
     $PREAMBLE apply LOREM_BLANK_LINES lorem_blank_lines-actual
 }
 
+test_c_comment () {
+    $PREAMBLE apply C_COMMENT c_comment-actual
+}
+
 # Grab all functions whose name starts with test_.
 TESTS=( $(declare -F -p | cut -d' ' -f3 | grep '^test_' | sed 's/^test_//g') )
 
