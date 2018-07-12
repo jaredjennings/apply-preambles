@@ -40,12 +40,13 @@ This is not a pipe.
 
 Preambles may be statements of software license, markings/labellings, etc.
 
-The lines added will be commented properly given the apparent syntax of the
-file. Syntaxes supported: Puppet with LaTeX in comments, LaTeX, BibTeX, shell
-scripts, Ruby, Python, Augeas, INI supporting # comments, make, Cheetah. Syntax
-is chosen using the filename.
+The lines added will be commented properly given the apparent syntax
+of the file. Syntaxes supported: Puppet with LaTeX in comments, LaTeX,
+BibTeX, shell scripts, Ruby, Python, Augeas, INI supporting #
+comments, make, Cheetah, Clojure, OpenSCAD. Syntax is chosen using the
+filename.
 
-Subversion .svn directories and their contents are skipped.
+.svn and .git directories, and their contents, are skipped.
 EOF
 }
  
